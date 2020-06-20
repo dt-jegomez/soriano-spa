@@ -51,3 +51,11 @@ function publishAseets () {
   fs.copySync(path.join(publicDir, 'build', 'dist'), path.join(publicDir, 'dist'))
   fs.removeSync(path.join(publicDir, 'build'))
 }
+
+
+
+mix.browserSync({
+    open: false,
+    proxy: 'http://soriano-spa.localhost',
+    files: ['public/dist/js/*.js', 'public/dist/css/*.css']
+})
