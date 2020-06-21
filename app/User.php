@@ -19,7 +19,13 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'nombre_completo',
+        'email',
+        'telefono',
+        'foto',
+        'rol_id',
+        'estado',
+        'password',
     ];
 
     /**
@@ -28,7 +34,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token','foto',
     ];
 
     /**
@@ -56,7 +62,8 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
      */
     public function getPhotoUrlAttribute()
     {
-        return 'https://www.gravatar.com/avatar/'.md5(strtolower($this->email)).'.jpg?s=200&d=mm';
+        $avatar = 'https://www.gravatar.com/avatar/'.md5(strtolower($this->email)).'.jpg?s=200&d=mm';
+        return is_null($this->foto)?$avatar:$this->foto;
     }
 
     /**
