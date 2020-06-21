@@ -17,9 +17,10 @@ class UserSeeder extends Seeder
                     'correo_electronico' => 'go.juangomez23@gmail.com',
                     'telefono' => '+573188315485',
                     'rol_id' => 1,
+                    'foto'=> null,
+                    'estado'=> true,
                     'password' => bcrypt('password')
                 ]
             ]);
-            
     }
 }
