@@ -30,7 +30,7 @@
               <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" />
             </el-form-item>
 
-            <el-form-item>
+            <el-form-item label="Foto de perfil">
               <el-upload
               class="upload-demo"
               ref="upload"
@@ -41,6 +41,17 @@
               <el-button slot="trigger" size="small" type="primary">Selecciona un archivo</el-button>
               <div slot="tip" class="el-upload__tip">Solo archivos de imagen</div>
             </el-upload>
+            </el-form-item>
+
+            <el-form-item label="Intereses">
+                <el-select v-model="ruleForm.intereses" multiple placeholder="Seleccione">
+                <el-option
+                  v-for="(item, index) in options"
+                  :key="index"
+                  :label="item"
+                  :value="item">
+                </el-option>
+              </el-select>
             </el-form-item>
             
             <el-form-item>
@@ -101,10 +112,14 @@ export default {
         telefono:'',
         foto:null,
         rol_id:1,
+        intereses:[],
         password: '',
         checkPass: '',
       },
+      options:[],
+      //
       mustVerifyEmail: false,
+      //
       rules: {
         nombre_completo: [
           { required: true, message: 'Por favor ingrese el nombre', trigger: 'blur' },
@@ -127,6 +142,9 @@ export default {
         ],
       },
     }
+  },
+  mounted(){
+    this.listarInterese()
   },
   methods: {
       async submitForm(formName) {
@@ -178,6 +196,10 @@ export default {
       } catch (error) {
         console.error(error);
       }
+    },
+    async listarInterese(){
+        const { data } = await Axios(`/api/listado-interes`)
+        this.options = data 
     }
   }
 }

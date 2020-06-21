@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class DiscoController extends Controller
 {
+
+   
+    
     /**
      * Display a listing of the resource.
      *
@@ -46,40 +49,14 @@ class DiscoController extends Controller
      */
     public function show(Disco $disco)
     {
-        //
+        return Disco::all();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Disco  $disco
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Disco $disco)
+    public function listInteres()
     {
-        //
+        $model = new Disco();
+        return $model->listInteres();
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Disco  $disco
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Disco $disco)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Disco  $disco
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Disco $disco)
-    {
-        //
-    }
 }

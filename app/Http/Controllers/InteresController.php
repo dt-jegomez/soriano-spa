@@ -14,18 +14,10 @@ class InteresController extends Controller
      */
     public function index()
     {
-        //
+        return Interes::all();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+   
 
     /**
      * Store a newly created resource in storage.
@@ -38,48 +30,5 @@ class InteresController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Interes  $interes
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Interes $interes)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Interes  $interes
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Interes $interes)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Interes  $interes
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Interes $interes)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Interes  $interes
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Interes $interes)
-    {
-        //
-    }
+    /
 }
