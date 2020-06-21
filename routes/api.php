@@ -20,6 +20,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::patch('settings/profile', 'Settings\ProfileController@update');
     Route::patch('settings/password', 'Settings\PasswordController@update');
+
+    Route::resource('disco', 'DiscoController');
+
 });
 
 Route::group(['middleware' => 'guest:api'], function () {
@@ -36,4 +39,5 @@ Route::group(['middleware' => 'guest:api'], function () {
     Route::get('oauth/{driver}/callback', 'Auth\OAuthController@handleProviderCallback')->name('oauth.callback');
 
     Route::get('listado-interes', 'DiscoController@listInteres');
+
 });
