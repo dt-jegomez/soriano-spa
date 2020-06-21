@@ -7,7 +7,7 @@ import App from '~/components/App'
 import '~/plugins'
 import '~/components'
 import '~/services'
-
+import 'element-ui/lib/theme-chalk/index.css';
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

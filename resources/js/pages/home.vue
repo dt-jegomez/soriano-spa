@@ -89,13 +89,15 @@ export default {
       this.tableDiscos = data;
     },
     handleEdit(index, row) {
-      console.log(index, row);
+		this.$refs.modalDisco.toggleEditar(row)
+
     },
-    handleDelete(index, row) {
-      console.log(index, row);
+    async handleDelete(index, row) {
+	  const { data } = await axios.delete(`/api/disco/${row.id}`);
+	  console.log(data.mensaje);
+	  this.listarDiscos();
     },
     OpenModal() {
-		console.log('OpenModal')
 		this.$refs.modalDisco.toggleCrear()
 	}
   }

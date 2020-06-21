@@ -12,32 +12,15 @@ class DiscoController extends Controller
 
    
     
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function index()
     {
         return Disco::select( 'id','nombre', 'album', 'artista', 'genero', 'anio', 'foto')->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+   
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
         try {
@@ -51,15 +34,19 @@ class DiscoController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Disco  $disco
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Disco $disco)
+
+    public function update(Request $request, $id)
     {
-        return Disco::all();
+        Disco::whereId($id)->update($request->all());
+        return response(['mensaje' => 'registro exitoso'], 200);
+
+    }
+
+
+    public function destroy($id)
+    {
+        Disco::whereId($id)->delete();
+        return response(['mensaje' => 'eliminado exitoso'], 200);
     }
 
     public function listInteres()

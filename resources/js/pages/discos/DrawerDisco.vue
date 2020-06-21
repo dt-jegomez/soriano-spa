@@ -34,19 +34,8 @@
                        
 
                         <el-form-item label="Foto" prop="foto">
-                            <!-- <el-upload class="upload-demo" ref="upload" action='' :limit="1" accept="image/*" :auto-upload="false" :file-list="fileList" >
+                            <el-upload class="upload-demo" ref="upload" action='' :limit="1" accept="image/*" :auto-upload="false" :file-list="fileList" >
                                 <el-button slot="trigger" size="small" type="primary">Selecciona un archivo</el-button>
-                            </el-upload> -->
-                            <el-upload
-                                    class="upload-demo"
-                                    action=""
-                                    :auto-upload="false"
-                                    :on-preview="handlePreview"
-                                    :on-remove="handleRemove"                                    
-                                    :limit="1"
-                                    :file-list="fileList"
-                                    >
-                                    <el-button size="small" type="primary">Selecciona un archivo</el-button>
                             </el-upload>
                         </el-form-item>
                         
@@ -125,6 +114,21 @@ export default {
             this.title=' Crea nuevo disco'
             this.tipo = false
         },
+        toggleEditar(row){
+            this.clear()
+            this.drawer = true            
+            this.title=' Editar disco'
+            this.tipo = true,
+            this.ruleForm = {
+                foto: row.foto,
+                nombre: row.nombre,
+                album: row.album,
+                artista: row.artista,
+                genero: row.genero,
+                anio: row.anio,
+            }
+            this.id = row.id
+        },
         async submitForm(formName){
             const valid = await this.$refs[formName].validate()
                 if (valid) {
@@ -160,8 +164,11 @@ export default {
             console.log(data.mensaje);
             this.clear()
             this.$refs.upload.clearFiles
+            this.$emit('listar')
+
         },
         async editar(){
+            console.log(this.id,this.ruleForm);
             const { data } = await Axios.put(`/api/disco/${this.id}`,this.ruleForm)
             console.log(data.mensaje);
             this.clear()
@@ -176,15 +183,11 @@ export default {
                 genero:'',
                 anio:'',
             }
-            this.id = null
-        },
-        handleRemove(file, fileList) {
-            console.log(file, fileList);
-        },
-        handlePreview(file) {
-            console.log(file);
-        }
+            this.id = null,
+            // this.$refs.upload.clearFiles,
+            this.fileList = []
 
+        }
     }
 }
 </script>
