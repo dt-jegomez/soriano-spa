@@ -4,72 +4,42 @@ namespace App\Http\Controllers;
 
 use App\Rol;
 use Illuminate\Http\Request;
-
+use DB;
 class RolController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         return Rol::select('id','nombre')->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+  
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+ 
     public function store(Request $request)
     {
-        //
+        try {
+            return DB::transaction(function()use($request){
+                Rol::create($request->all());
+                return response(['mensaje'=>'registro exitoso'],201);
+            });
+        } catch (\Throwable $th) {
+            return $th;
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Rol  $rol
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Rol $rol)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Rol  $rol
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Rol $rol)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Rol  $rol
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Rol $rol)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            return DB::transaction(function () use ($request,$id) {
+                Rol::whereId($id)->update($request->all());
+                return response(['mensaje' => 'registro exitoso'], 201);
+            });
+        } catch (\Throwable $th) {
+            return $th;
+        }
     }
 
     /**
@@ -78,8 +48,12 @@ class RolController extends Controller
      * @param  \App\Rol  $rol
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Rol $rol)
+    public function destroy($id)
     {
-        //
+        return DB::transaction(function () use ($id) {
+            Rol::whereId($id)->delete();
+            return response(['mensaje' => 'registro exitoso'], 201);
+        });
+
     }
 }

@@ -23,6 +23,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::resource('disco', 'DiscoController');
 
+    Route::resource('rol', 'RolController');
+
 });
 
 Route::group(['middleware' => 'guest:api'], function () {
@@ -40,6 +42,7 @@ Route::group(['middleware' => 'guest:api'], function () {
 
     Route::get('listado-interes', 'DiscoController@listInteres');
     
-    Route::resource('rol', 'RolController');
-
+    
 });
+
+Route::resource('lista-rol', 'RolController@index');

@@ -20,7 +20,7 @@ class CreateDiscosTable extends Migration
             $table->string('artista',250);
             $table->string('genero',250);
             $table->date('anio');            
-            $table->string('foto',250);
+            $table->string('foto',500);
             $table->timestamps();
         });
     }

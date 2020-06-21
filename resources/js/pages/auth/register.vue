@@ -198,7 +198,7 @@ export default {
         this.options = data 
     },
     async listarRoles(){
-      const { data } = await Axios(`/api/rol`)
+      const { data } = await Axios(`/api/lista-rol`)
       this.optionsRoles = data
     },
     resetForm(formName) {
