@@ -18,7 +18,7 @@
               <el-input v-model="ruleForm.email" />
             </el-form-item>
 
-            <el-form-item label="telefono" prop="telefono">
+            <el-form-item label="telefono" prop="telefono" placeholder="+573188315485">
               <el-input v-model="ruleForm.telefono" />
             </el-form-item>
 
@@ -30,33 +30,30 @@
               <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" />
             </el-form-item>
 
-            <el-form-item label="Foto de perfil">
-              <el-upload
-              class="upload-demo"
-              ref="upload"
-              action=''
-              :limit="1"
-              accept="image/*"
-              :auto-upload="false">
-              <el-button slot="trigger" size="small" type="primary">Selecciona un archivo</el-button>
-              <div slot="tip" class="el-upload__tip">Solo archivos de imagen</div>
-            </el-upload>
+            <el-form-item label="Rol" prop="rol_id">
+                <el-select v-model="ruleForm.rol_id" placeholder="Seleccione" class="w-100" clearable>
+                  <el-option v-for="(item, index) in optionsRoles" :key="index" :label="item.nombre" :value="item.id" />
+                </el-select>
             </el-form-item>
 
-            <el-form-item label="Intereses">
-                <el-select v-model="ruleForm.intereses" multiple placeholder="Seleccione">
-                <el-option
-                  v-for="(item, index) in options"
-                  :key="index"
-                  :label="item"
-                  :value="item">
-                </el-option>
+            <el-form-item label="Foto de perfil">
+              <el-upload class="upload-demo" ref="upload" action='' :limit="1" accept="image/*" :auto-upload="false">
+                <el-button slot="trigger" size="small" type="primary">Selecciona un archivo</el-button>
+                <div slot="tip" class="el-upload__tip">Solo archivos de imagen</div>
+              </el-upload>
+            </el-form-item>
+
+            <el-form-item label="Intereses" v-if="ruleForm.rol_id !== 1">
+              <el-select v-model="ruleForm.intereses" multiple placeholder="Seleccione" class="w-100">
+                <el-option v-for="(item, index) in options" :key="index" :label="item" :value="item" />
               </el-select>
             </el-form-item>
             
-            <el-form-item>
-              <el-button type="primary" @click="submitForm('ruleForm')">Create</el-button>
-            </el-form-item>
+            <div class="row justify-content-end mt-5 px-3">
+                <el-button type="danger" @click="resetForm('ruleForm')">Cancelar</el-button>
+                <el-button type="primary" @click="submitForm('ruleForm')">Registrar</el-button>
+            </div>
+
           </el-form>
       </card>
     </div>
@@ -67,7 +64,6 @@
 import firebase from "firebase";
 import "firebase/storage";
 import Axios from 'axios'
-// import Form from 'vform'
 import LoginWithGithub from '~/components/LoginWithGithub'
 
 export default {
@@ -93,13 +89,9 @@ export default {
       }
     };
     var validatePass2 = (rule, value, callback) => {
-      console.log('validatePass2',value);
-      
       if (value === '') {
         callback(new Error('Please input the password again'));
       } else if (value !== this.ruleForm.password) {
-        console.log('que esto',value);
-        
         callback(new Error('Two inputs don\'t match!'));
       } else {
         callback();
@@ -111,12 +103,13 @@ export default {
         email:'',
         telefono:'',
         foto:null,
-        rol_id:1,
+        rol_id:'',
         intereses:[],
         password: '',
         checkPass: '',
       },
       options:[],
+      optionsRoles:[],
       //
       mustVerifyEmail: false,
       //
@@ -128,8 +121,10 @@ export default {
         email: [
           { required: true, message: 'Por favor ingrese el correo electronico', trigger: 'blur' },
           { min: 1, max: 255, message: 'La longitud debe ser de 3 a 255', trigger: 'blur' },
-          // { email, message: 'email', trigger: 'blur' },
           {type: "email",  message: "no es un correo valido", trigger: 'blur'}
+        ],
+        telefono: [
+          { max: 15, message: 'La longitud debe ser menor o igual a 15', trigger: 'blur' },
         ],
         rol_id: [
           { required: true, message: 'Por favor ingrese el rol', trigger: 'change' }
@@ -145,6 +140,7 @@ export default {
   },
   mounted(){
     this.listarInterese()
+    this.listarRoles()
   },
   methods: {
       async submitForm(formName) {
@@ -200,6 +196,13 @@ export default {
     async listarInterese(){
         const { data } = await Axios(`/api/listado-interes`)
         this.options = data 
+    },
+    async listarRoles(){
+      const { data } = await Axios(`/api/rol`)
+      this.optionsRoles = data
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     }
   }
 }

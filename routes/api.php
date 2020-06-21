@@ -39,5 +39,7 @@ Route::group(['middleware' => 'guest:api'], function () {
     Route::get('oauth/{driver}/callback', 'Auth\OAuthController@handleProviderCallback')->name('oauth.callback');
 
     Route::get('listado-interes', 'DiscoController@listInteres');
+    
+    Route::resource('rol', 'RolController');
 
 });
