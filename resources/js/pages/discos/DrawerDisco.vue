@@ -168,7 +168,12 @@ export default {
 
         },
         async editar(){
-            console.log(this.id,this.ruleForm);
+            var foto = await this.submitUpload()
+            if (this.ruleForm.foto === null) {
+                this.ruleForm.foto = foto
+            } else if (foto !== null) {
+                this.ruleForm.foto = foto
+            }
             const { data } = await Axios.put(`/api/disco/${this.id}`,this.ruleForm)
             console.log(data.mensaje);
             this.clear()

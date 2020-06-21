@@ -25,6 +25,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::resource('rol', 'RolController');
 
+    Route::post('user-create', 'Auth\UserController@store');
+
 });
 
 Route::group(['middleware' => 'guest:api'], function () {
@@ -40,9 +42,10 @@ Route::group(['middleware' => 'guest:api'], function () {
     Route::post('oauth/{driver}', 'Auth\OAuthController@redirectToProvider');
     Route::get('oauth/{driver}/callback', 'Auth\OAuthController@handleProviderCallback')->name('oauth.callback');
 
-    Route::get('listado-interes', 'DiscoController@listInteres');
     
     
 });
 
-Route::resource('lista-rol', 'RolController@index');
+Route::get('listado-interes', 'DiscoController@listInteres');
+
+Route::get('lista-rol', 'RolController@index');
