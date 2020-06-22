@@ -18,7 +18,6 @@ class UserSeeder extends Seeder
                     'telefono' => '+573188315485',
                     'rol_id' => 1,
                     'foto'=> null,
-                    'estado'=> true,
                     'password' => bcrypt('password')
                 ]
             ]);
