@@ -37,9 +37,13 @@
             </el-form-item>
 
             <el-form-item label="Foto de perfil">
-              <el-upload class="upload-demo" ref="upload" action='' :limit="1" accept="image/*" :auto-upload="false">
+              <!-- <el-upload class="upload-demo" ref="upload" action='' :limit="1" accept="image/*" :auto-upload="false">
                 <el-button slot="trigger" size="small" type="primary">Selecciona un archivo</el-button>
                 <div slot="tip" class="el-upload__tip">Solo archivos de imagen</div>
+              </el-upload> -->
+              <el-upload ref="upload" class="avatar-uploader" action="" :show-file-list="false" accept="image/*" :auto-upload="false" :on-change="submitUpload" >
+              <img v-if="ruleForm.foto" :src="ruleForm.foto" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon" />
               </el-upload>
             </el-form-item>
 
@@ -146,7 +150,7 @@ export default {
       async submitForm(formName) {
         const valid = await this.$refs[formName].validate()
             if (valid) {
-              this.ruleForm.foto = await this.submitUpload()
+              // this.ruleForm.foto = await this.submitUpload()
               this.register()
             } else {
               console.log('error submit!!');
@@ -178,17 +182,16 @@ export default {
         this.$router.push({ name: 'home' })
       }
     },
-    async submitUpload() {
+    async submitUpload(file) {
       try {
-        const { raw } =  await this.$refs.upload.uploadFiles[0];
-        const file = raw;
-        if (file) {
-          const response = await firebase.storage().ref(`${file.name}`).put(file);
+        const { raw } = file;
+        if (raw) {
+          const response = await firebase.storage().ref(`${raw.name}`).put(raw);
           const url = await response.ref.getDownloadURL();
           console.log("archivo disponible en ", url);
-          return url;
+          this.ruleForm.foto = url;
         } else {
-          return null
+          this.ruleForm.foto = null
           console.log("falta el archivo");          
         }
       } catch (error) {
@@ -206,6 +209,7 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }
+
   }
 }
 </script>

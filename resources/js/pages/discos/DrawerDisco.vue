@@ -34,9 +34,13 @@
                        
 
                         <el-form-item label="Foto" prop="foto">
-                            <el-upload class="upload-demo" ref="upload" action='' :limit="1" accept="image/*" :auto-upload="false" :file-list="fileList" >
+                            <!-- <el-upload class="upload-demo" ref="upload" action='' :limit="1" accept="image/*" :auto-upload="false" :file-list="fileList" >
                                 <el-button slot="trigger" size="small" type="primary">Selecciona un archivo</el-button>
-                            </el-upload>
+                            </el-upload> -->
+                            <el-upload ref="upload" class="avatar-uploader" action="" :show-file-list="false" accept="image/*" :auto-upload="false" :on-change="submitUpload" >
+                            <img v-if="ruleForm.foto" :src="ruleForm.foto" class="avatar">
+                            <i v-else class="el-icon-plus avatar-uploader-icon" />
+                            </el-upload>                        
                         </el-form-item>
                         
                         <div class="row justify-content-end mt-5 px-3">
@@ -135,7 +139,7 @@ export default {
                     if (this.tipo) {
                         this.editar()
                     }else{
-                        this.ruleForm.foto = await this.submitUpload()
+                        // this.ruleForm.foto = await this.submitUpload()
                         this.register()
                     }
                 } else {
@@ -143,17 +147,17 @@ export default {
                     return false;
                 }
         },
-        async submitUpload() {
+        async submitUpload(file) {
             try {
-                const { raw } =  await this.$refs.upload.uploadFiles[0];
-                const file = raw;
-                if (file) {
-                const response = await firebase.storage().ref(`${file.name}`).put(file);
+                const { raw } = file;
+                if (raw) {
+                const response = await firebase.storage().ref(`${raw.name}`).put(raw);
                 const url = await response.ref.getDownloadURL();
-                return url;
+                console.log("archivo disponible en ", url);
+                this.ruleForm.foto = url;
                 } else {
-                    return null
-                    console.log("falta el archivo");          
+                this.ruleForm.foto = null
+                console.log("falta el archivo");          
                 }
             } catch (error) {
                 console.error(error);
@@ -168,12 +172,12 @@ export default {
 
         },
         async editar(){
-            var foto = await this.submitUpload()
-            if (this.ruleForm.foto === null) {
-                this.ruleForm.foto = foto
-            } else if (foto !== null) {
-                this.ruleForm.foto = foto
-            }
+            // var foto = await this.submitUpload()
+            // if (this.ruleForm.foto === null) {
+            //     this.ruleForm.foto = foto
+            // } else if (foto !== null) {
+            //     this.ruleForm.foto = foto
+            // }
             const { data } = await Axios.put(`/api/disco/${this.id}`,this.ruleForm)
             console.log(data.mensaje);
             this.clear()
