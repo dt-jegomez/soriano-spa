@@ -7,8 +7,8 @@
       <div class="form-group row">
         <label class="col-md-3 col-form-label text-md-right">{{ $t('name') }}</label>
         <div class="col-md-7">
-          <input v-model="form.name" :class="{ 'is-invalid': form.errors.has('name') }" class="form-control" type="text" name="name">
-          <has-error :form="form" field="name" />
+          <input v-model="form.nombre" :class="{ 'is-invalid': form.errors.has('nombre') }" class="form-control" type="text" name="nombre">
+          <has-error :form="form" field="nombre" />
         </div>
       </div>
 
@@ -46,7 +46,7 @@ export default {
 
   data: () => ({
     form: new Form({
-      name: '',
+      nombre: '',
       email: ''
     })
   }),
