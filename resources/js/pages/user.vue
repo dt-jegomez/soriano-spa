@@ -21,14 +21,14 @@
             <el-form-item label="telefono" prop="telefono" placeholder="+573188315485">
               <el-input v-model="ruleForm.telefono" />
             </el-form-item>
-
+<!-- 
             <el-form-item label="contraseña" prop="password">
               <el-input type="password" v-model="ruleForm.password" autocomplete="off" />
             </el-form-item>
 
             <el-form-item label="Confirmar" prop="checkPass">
               <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" />
-            </el-form-item>
+            </el-form-item> -->
 
             <el-form-item label="Rol" prop="rol_id">
                 <el-select v-model="ruleForm.rol_id" placeholder="Seleccione" class="w-100" clearable>
@@ -78,25 +78,25 @@ export default {
   },
 
   data() {
-    var validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('Please input the password'));
-      } else {
-        if (this.ruleForm.checkPass !== '') {
-          this.$refs.ruleForm.validateField('checkPass');
-        }
-        callback();
-      }
-    };
-    var validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('Please input the password again'));
-      } else if (value !== this.ruleForm.password) {
-        callback(new Error('Two inputs don\'t match!'));
-      } else {
-        callback();
-      }
-    };
+    // var validatePass = (rule, value, callback) => {
+    //   if (value === '') {
+    //     callback(new Error('Please input the password'));
+    //   } else {
+    //     if (this.ruleForm.checkPass !== '') {
+    //       this.$refs.ruleForm.validateField('checkPass');
+    //     }
+    //     callback();
+    //   }
+    // };
+    // var validatePass2 = (rule, value, callback) => {
+    //   if (value === '') {
+    //     callback(new Error('Please input the password again'));
+    //   } else if (value !== this.ruleForm.password) {
+    //     callback(new Error('Two inputs don\'t match!'));
+    //   } else {
+    //     callback();
+    //   }
+    // };
     return {
       ruleForm:{
         nombre_completo:'',
@@ -105,8 +105,8 @@ export default {
         foto:null,
         rol_id:'',
         intereses:[],
-        password: '',
-        checkPass: '',
+        // password: '',
+        // checkPass: '',
       },
       options:[],
       optionsRoles:[],
@@ -129,12 +129,12 @@ export default {
         rol_id: [
           { required: true, message: 'Por favor ingrese el rol', trigger: 'change' }
         ],
-        password: [
-            { validator: validatePass, trigger: 'blur' }
-          ],
-        checkPass: [
-          { validator: validatePass2, trigger: 'blur' }
-        ],
+        // password: [
+        //     { validator: validatePass, trigger: 'blur' }
+        //   ],
+        // checkPass: [
+        //   { validator: validatePass2, trigger: 'blur' }
+        // ],
       },
     }
   },
@@ -156,8 +156,11 @@ export default {
 
     async register () {
       // Register the user.
-      debugger
       const { data } = await Axios.post('/api/user-create',this.ruleForm)
+      console.log(data.mensaje)
+      this.$message({ message: data.mensaje, type: 'success' });
+      this.$refs['ruleForm'].resetFields();
+      this.ruleForm.intereses=[]
 
       // Must verify email fist.
       if (data.status) {
@@ -175,7 +178,6 @@ export default {
           return url;
         } else {
           return null
-          console.log("falta el archivo");          
         }
       } catch (error) {
         console.error(error);
@@ -191,6 +193,7 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+      this.ruleForm.intereses=[]
     }
   }
 }

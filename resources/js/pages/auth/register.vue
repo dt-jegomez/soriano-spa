@@ -90,9 +90,9 @@ export default {
     };
     var validatePass2 = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('Please input the password again'));
+        callback(new Error('Por favor ingrese la contraseña nuevamente'));
       } else if (value !== this.ruleForm.password) {
-        callback(new Error('Two inputs don\'t match!'));
+        callback(new Error('La contraseña no coincide'));
       } else {
         callback();
       }

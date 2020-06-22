@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('foto',500)->nullable();
             $table->bigInteger('rol_id')->unsigned();
             $table->boolean('estado')->default(false);
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
