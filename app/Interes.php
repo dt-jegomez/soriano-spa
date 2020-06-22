@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Interes extends Model
 {
-    protected $teble = "intereses";
+    protected $table = "intereses";
+    protected $fillable = [
+        'tag',
+        'user_id'
+    ];
 }

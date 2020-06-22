@@ -7,6 +7,8 @@ use Illuminate\Auth\Events\Registered;
 use App\User;
 use Illuminate\Http\Request;
 use DB;
+use App\Http\Controllers\InteresController as interes;
+
 class UserController extends Controller
 {
     /**
@@ -24,14 +26,18 @@ class UserController extends Controller
     {
         try {
             return DB::transaction(function () use ($request) {
+                
                 $request['password'] = bcrypt($request['password']);
                 $model = new User();
                 event(new Registered($user = $model->create($request->all())));
 
-                return response([
-                    'mensaje' => 'registro exitoso',
-                    'usuario'=> $user
-                ], 201);
+                if (count($request['intereses']) > 0) {
+                    $controller = new interes;
+                    $controller->store($request['intereses'], $user);
+                }
+
+                return response([ 'mensaje' => 'registro exitoso', 'usuario'=> $user ], 201);
+                
             });
         } catch (\Throwable $th) {
             return $th;

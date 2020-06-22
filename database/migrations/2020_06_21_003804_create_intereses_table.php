@@ -16,6 +16,8 @@ class CreateInteresesTable extends Migration
         Schema::create('intereses', function (Blueprint $table) {
             $table->id();
             $table->string('tag',250);
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

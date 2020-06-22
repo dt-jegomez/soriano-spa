@@ -8,7 +8,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use App\Http\Controllers\InteresController as interes;
+// use App\Interes;
+use DB;
 class RegisterController extends Controller
 {
     use RegistersUsers;
@@ -63,7 +65,24 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $data['password'] = bcrypt($data['password']);
-        return User::create($data);
+        
+        return DB::transaction(function () use ($data) {
+            
+            $data['password'] = bcrypt($data['password']);
+            $user = User::create($data);
+            
+            if (count($data['intereses'])>0) {
+                $controller = new interes;
+                $controller->store($data['intereses'],$user);
+                
+                // $collection = collect($data['intereses'])->map(function($value) use ($user){
+                //     return ['tag' => $value, 'user_id' => $user->id];
+                // })->toArray();
+                // $a = Interes::insert($collection);
+                // dd($a);
+            }
+            return $user;
+            
+        });
     }
 }
