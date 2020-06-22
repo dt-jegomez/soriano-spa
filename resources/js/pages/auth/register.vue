@@ -160,6 +160,8 @@ export default {
 
       // Must verify email fist.
       if (data.status) {
+        console.log('Must verify email fist',data.status);
+        
         this.mustVerifyEmail = true
       } 
       else {

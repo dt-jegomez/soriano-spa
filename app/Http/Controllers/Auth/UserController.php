@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Registered;
+use App\User;
 use Illuminate\Http\Request;
 use DB;
 class UserController extends Controller
@@ -22,8 +24,14 @@ class UserController extends Controller
     {
         try {
             return DB::transaction(function () use ($request) {
-                return $request->all();
-                // return response(['mensaje' => 'registro exitoso'], 201);
+                $request['password'] = bcrypt($request['password']);
+                $model = new User();
+                event(new Registered($user = $model->create($request->all())));
+
+                return response([
+                    'mensaje' => 'registro exitoso',
+                    'usuario'=> $user
+                ], 201);
             });
         } catch (\Throwable $th) {
             return $th;

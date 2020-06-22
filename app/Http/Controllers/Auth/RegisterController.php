@@ -63,7 +63,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return $data;
         $data['password'] = bcrypt($data['password']);
         return User::create($data);
     }
